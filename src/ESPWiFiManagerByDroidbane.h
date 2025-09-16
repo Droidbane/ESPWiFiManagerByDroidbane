@@ -1,5 +1,5 @@
-#ifndef ESPWiFiManager_h
-#define ESPWiFiManager_h
+#ifndef ESPWiFiManagerByDroidbane_h
+#define ESPWiFiManagerByDroidbane_h
 
 #include <Arduino.h>
 #include <ESP8266WiFi.h>
@@ -7,9 +7,9 @@
 #include <LittleFS.h>
 #include <ArduinoJson.h>
 
-class ESPWiFiManager {
+class ESPWiFiManagerByDroidbane {
 public:
-    ESPWiFiManager(const char* apSSID = "ESP_Setup");
+    ESPWiFiManagerByDroidbane(const char* apSSID = "ESP_Setup");
     
     void begin();                         // Setup işlemleri
     void loop();                          // loop içinde sürekli çağır

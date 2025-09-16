@@ -1,9 +1,9 @@
-#include "ESPWiFiManager.h"
+#include "ESPWiFiManagerByDroidbane.h"
 
-ESPWiFiManager::ESPWiFiManager(const char* apSSID) 
+ESPWiFiManagerByDroidbane::ESPWiFiManagerByDroidbane(const char* apSSID) 
 : server(80), apSSID(apSSID), connected(false) {}
 
-void ESPWiFiManager::begin() {
+void ESPWiFiManagerByDroidbane::begin() {
     Serial.begin(115200);
 
     // Önce kaydedilmiş Wi-Fi bilgilerini dene
@@ -29,12 +29,12 @@ void ESPWiFiManager::begin() {
     Serial.println("HTTP server başlatıldı");
 }
 
-void ESPWiFiManager::loop() {
+void ESPWiFiManagerByDroidbane::loop() {
     server.handleClient();
 }
 
 // Wi-Fi bağlantısı
-void ESPWiFiManager::connectToWiFi(const String &ssid, const String &password) {
+void ESPWiFiManagerByDroidbane::connectToWiFi(const String &ssid, const String &password) {
     WiFi.mode(WIFI_STA);
     WiFi.begin(ssid.c_str(), password.c_str());
     Serial.print("WiFi'ye bağlanılıyor");
@@ -54,7 +54,7 @@ void ESPWiFiManager::connectToWiFi(const String &ssid, const String &password) {
 }
 
 // HTTP endpointler
-void ESPWiFiManager::handleWifi() {
+void ESPWiFiManagerByDroidbane::handleWifi() {
     if (server.method() == HTTP_POST) {
         String cacheSsid = server.arg("ssid");
         String cachePassword = server.arg("password");
@@ -73,7 +73,7 @@ void ESPWiFiManager::handleWifi() {
     }
 }
 
-void ESPWiFiManager::handleRestart() {
+void ESPWiFiManagerByDroidbane::handleRestart() {
     if (server.method() == HTTP_POST) {
         server.send(200, "text/plain", "Cihaz yeniden başlatılıyor...");
         delay(500);
@@ -83,7 +83,7 @@ void ESPWiFiManager::handleRestart() {
     }
 }
 
-void ESPWiFiManager::handleWifiUpdate() {
+void ESPWiFiManagerByDroidbane::handleWifiUpdate() {
     if (server.method() == HTTP_POST) {
         server.send(200, "text/plain", "WiFi bilgileri siliniyor.");
         clearCredentials();
@@ -93,7 +93,7 @@ void ESPWiFiManager::handleWifiUpdate() {
 }
 
 // LittleFS işlemleri
-bool ESPWiFiManager::saveCredentials(const char* ssid, const char* password) {
+bool ESPWiFiManagerByDroidbane::saveCredentials(const char* ssid, const char* password) {
     if (!LittleFS.begin()) return false;
     DynamicJsonDocument doc(256);
     doc["ssid"] = ssid;
@@ -106,7 +106,7 @@ bool ESPWiFiManager::saveCredentials(const char* ssid, const char* password) {
     return true;
 }
 
-bool ESPWiFiManager::loadCredentials(String &ssid, String &password) {
+bool ESPWiFiManagerByDroidbane::loadCredentials(String &ssid, String &password) {
     if (!LittleFS.begin()) return false;
     if (!LittleFS.exists("/wifi.json")) return false;
 
@@ -123,7 +123,7 @@ bool ESPWiFiManager::loadCredentials(String &ssid, String &password) {
     return true;
 }
 
-bool ESPWiFiManager::clearCredentials() {
+bool ESPWiFiManagerByDroidbane::clearCredentials() {
     if (!LittleFS.begin()) return false;
     if (LittleFS.exists("/wifi.json")) {
         return LittleFS.remove("/wifi.json");
