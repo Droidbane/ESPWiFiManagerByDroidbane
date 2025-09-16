@@ -87,6 +87,7 @@ void ESPWiFiManagerByDroidbane::handleWifiUpdate() {
     if (server.method() == HTTP_POST) {
         server.send(200, "text/plain", "WiFi bilgileri siliniyor.");
         clearCredentials();
+        ESP.restart();
     } else {
         server.send(405, "text/plain", "Sadece POST destekleniyor!");
     }
@@ -130,3 +131,4 @@ bool ESPWiFiManagerByDroidbane::clearCredentials() {
     }
     return true;
 }
+
